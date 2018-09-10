@@ -1,0 +1,105 @@
+﻿@using Abp.Web.Mvc.Extensions
+@using TaawonMVC.Web.Models.Common.Modals
+@model  TaawonMVC.Web.Models.Applications.ApplicationsViewModel
+@{
+    Layout = null;
+}
+@{
+    SetAntiForgeryCookie();
+}
+@Html.Partial("~/Views/Shared/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(L("EditBuildingUnit")))
+
+<div class="modal-body">
+
+    @using (Ajax.BeginForm("CreateBuildingUnits", "Building", new { BuildingId = @Model.buildingOutput.Id },
+
+        new AjaxOptions
+        {
+            OnSuccess = "OnSuccess",
+            OnFailure = "OnFailure",
+
+        },
+        htmlAttributes: new { @class = "form-group" }))
+
+    {
+
+        @Html.AntiForgeryToken()
+
+        <div class="row clearfix" style="margin-top:10px;">
+            <div class="col-sm-6">
+                <div class="form-group form-float">
+                    <div class="form-line">
+                        <input type="text" name="ResidentName" id="ResidentName" class="form-control" required maxlength="255" placeholder="@L("ResidentName")">
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group form-float">
+                    <div class="form-line">
+                        <input type="text" name="ResidenceStatus" id="ResidenceStatus" class="form-control" required maxlength="255" placeholder="@L("ResidenceStatus")">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row clearfix">
+            <div class="col-sm-6">
+                <div class="form-group form-float">
+                    <div class="form-line">
+                        <input type="text" name="NumberOfFamilyMembers" id="NumberOfFamilyMembers" class="form-control" required maxlength="255" placeholder="@L("NumberOfFamilyMembers")">
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group form-float">
+                    <div class="form-line">
+                        <input type="text" name="Floor" id="Floor" class="form-control" required maxlength="255" placeholder="@L("Floor")">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row clearfix">
+            <div class="col-sm-6">
+                <div class="form-group form-float">
+                    <div class="form-line">
+                        @*Commented until get kendo license 13082018*@
+                        @*@(Html.Kendo().MultiSelect().Name("UnitContentsMultiSelect") //The name of the MultiSelect is mandatory. It specifies the "id" attribute of the widget.
+                                                                                      .DataTextField("UnitPartName") //Specify which property of the unit to be used by the MultiSelect as a text.
+                                                                                      .DataValueField("Id") //Specify which property of the Unit to be used by the MultiSelect as a value.
+                                                                                      .BindTo(Model.BuildingUnitContents) //Pass the list of unit contents to the MultiSelect.
+                                                                                      .Placeholder("Select Unit Contents")
+                            )*@
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group form-float">
+                    <div class="form-line">
+                        <input name="buildingId" id="buildingId" type="hidden" value="@Model.Building.Id" />
+
+                        <input type="submit" value="Create New Unit" id="CreateNewUnit" class="btn btn-primary" onclick="ShowCreatedUnitsFunction()" />
+                        @*<button type="button" name="CreateNewUnit" id="CreateNewUnit"  class="btn btn-primary ">Create New Unit</button>*@
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    }
+
+    <div id="progressUnits" style="display: none">
+        <div id="bar">Unit Created Successfuly</div>
+    </div>
+    <div id="ShowCreatedUnits">
+
+    </div>
+
+
+</div>
+
+
+<script src="~/Views/Building/Index.js"></script>
